@@ -86,15 +86,67 @@ fn read_git_config(key: &str) -> Option<String> {
 }
 
 fn read_gh_current_user() -> Option<String> {
-    if let Ok(output) = Command::new("gh").args(["api", "user", "--jq", ".login"]).output() {
-        if output.status.success() {
-            let val = String::from_utf8_lossy(&output.stdout).trim().to_string();
-            if !val.is_empty() {
-                return Some(val);
+    // 1. Instant local file check in ~/.config/gh/hosts.yml (< 0.1ms)
+    if let Ok(home) = std::env::var("HOME") {
+        let hosts_path = PathBuf::from(home).join(".config/gh/hosts.yml");
+        if let Ok(content) = fs::read_to_string(hosts_path) {
+            for line in content.lines() {
+                let trimmed = line.trim();
+                if trimmed.starts_with("user:") {
+                    let parts: Vec<&str> = trimmed.split(':').collect();
+                    if parts.len() >= 2 {
+                        let user = parts[1].trim().to_string();
+                        if !user.is_empty() {
+                            return Some(user);
+                        }
+                    }
+                }
             }
         }
     }
     None
+}
+
+fn read_git_config_fast() -> (Option<String>, Option<String>, Option<String>) {
+    let mut name = None;
+    let mut email = None;
+    let mut signing_key = None;
+
+    if let Ok(home) = std::env::var("HOME") {
+        let gitconfig_path = PathBuf::from(home).join(".gitconfig");
+        if let Ok(content) = fs::read_to_string(gitconfig_path) {
+            let mut in_user_section = false;
+            for line in content.lines() {
+                let trimmed = line.trim();
+                if trimmed.starts_with('[') {
+                    in_user_section = trimmed == "[user]";
+                    continue;
+                }
+                if in_user_section {
+                    if let Some(idx) = trimmed.find('=') {
+                        let key = trimmed[..idx].trim();
+                        let val = trimmed[idx + 1..].trim();
+                        if key == "name" && !val.is_empty() {
+                            name = Some(val.to_string());
+                        } else if key == "email" && !val.is_empty() {
+                            email = Some(val.to_string());
+                        } else if key == "signingkey" && !val.is_empty() {
+                            signing_key = Some(val.to_string());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if name.is_none() {
+        name = read_git_config("user.name");
+    }
+    if email.is_none() {
+        email = read_git_config("user.email");
+    }
+
+    (name, email, signing_key)
 }
 
 fn read_loaded_ssh_keys() -> Vec<String> {
@@ -188,9 +240,7 @@ fn delete_profile(id: String) -> Result<Vec<GitProfile>, String> {
 
 #[tauri::command]
 fn get_system_state() -> Result<SystemState, String> {
-    let git_name = read_git_config("user.name");
-    let git_email = read_git_config("user.email");
-    let git_signing_key = read_git_config("user.signingkey");
+    let (git_name, git_email, git_signing_key) = read_git_config_fast();
     let gh_current_user = read_gh_current_user();
     let ssh_loaded_keys = read_loaded_ssh_keys();
 
@@ -245,23 +295,26 @@ fn switch_profile(id: String) -> Result<SwitchResult, String> {
         }
     }
 
-    // 2. SSH key
+    // 2. SSH key (spawn non-blocking for instant return)
     if let Some(ref key_path) = profile.ssh_key_path {
         let expanded = expand_tilde(key_path);
         if Path::new(&expanded).exists() {
-            let _ = Command::new("ssh-add").arg(&expanded).output();
+            let _ = Command::new("ssh-add").arg(&expanded).spawn();
             ssh_ok = true;
         }
     } else {
         ssh_ok = true;
     }
 
-    // 3. GitHub CLI
+    // 3. GitHub CLI (skip if already active)
     if let Some(ref gh_user) = profile.gh_user {
         if !gh_user.is_empty() {
-            let _ = Command::new("gh")
-                .args(["auth", "switch", "--user", gh_user])
-                .output();
+            let cur = read_gh_current_user();
+            if cur.as_deref() != Some(gh_user) {
+                let _ = Command::new("gh")
+                    .args(["auth", "switch", "--user", gh_user])
+                    .output();
+            }
             gh_ok = true;
         }
     } else {

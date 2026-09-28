@@ -65,8 +65,22 @@ export function App() {
 
   const handleSwitch = async (profileId: string) => {
     if (isSwitching) return;
+
+    const target = profiles.find((p) => p.id === profileId);
+    if (!target) return;
+
+    // Instant optimistic update (< 1ms)
     setIsSwitching(true);
     playSwitchSound();
+
+    setSystemState((prev) => ({
+      git_name: target.git_name,
+      git_email: target.git_email,
+      git_signing_key: target.signing_key || null,
+      gh_current_user: target.gh_user || prev?.gh_current_user || null,
+      ssh_loaded_keys: prev?.ssh_loaded_keys || [],
+      matched_profile_id: target.id,
+    }));
 
     try {
       const res = await invoke<SwitchResult>("switch_profile", { id: profileId });
@@ -76,6 +90,7 @@ export function App() {
       await loadData();
     } catch (err) {
       console.error(err);
+      await loadData();
     } finally {
       setIsSwitching(false);
     }
@@ -208,7 +223,9 @@ export function App() {
             </div>
             <div className="cc-row-right">
               {isActive ? (
-                <Check size={14} color={isWork ? "var(--cc-purple)" : "var(--cc-blue)"} strokeWidth={2.5} />
+                <span className="check-pop">
+                  <Check size={14} color={isWork ? "var(--cc-purple)" : "var(--cc-blue)"} strokeWidth={2.5} />
+                </span>
               ) : (
                 <span style={{ fontSize: "11px", color: "var(--cc-text-muted)" }}>Activer</span>
               )}

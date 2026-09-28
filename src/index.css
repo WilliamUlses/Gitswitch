@@ -87,8 +87,16 @@ body {
   cursor: pointer;
   border: none;
   outline: none;
-  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
   flex-shrink: 0;
+}
+
+.apple-switch:hover {
+  filter: brightness(1.08);
+}
+
+.apple-switch:active {
+  transform: scale(0.93);
 }
 
 .apple-switch.active {
@@ -103,12 +111,20 @@ body {
   position: absolute;
   top: 2px;
   left: 2px;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.45, 0.64, 1), width 0.15s ease;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+}
+
+.apple-switch:active .apple-switch-thumb {
+  width: 23px;
 }
 
 .apple-switch.active .apple-switch-thumb {
   transform: translateX(16px);
+}
+
+.apple-switch.active:active .apple-switch-thumb {
+  transform: translateX(13px);
 }
 
 /* Section Header (like 'Partage de connexion', 'Réseaux connus') */
@@ -128,7 +144,7 @@ body {
   padding: 6px 8px;
   border-radius: 9px;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1);
   min-height: 38px;
 }
 
@@ -138,6 +154,29 @@ body {
 
 .cc-row:active {
   background: var(--cc-highlight-active);
+  transform: scale(0.975);
+}
+
+.check-pop {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: checkmarkPop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-20deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.25) rotate(4deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
 }
 
 .cc-row-left {
@@ -223,7 +262,7 @@ body {
   color: var(--cc-text-primary);
   cursor: pointer;
   border-radius: 8px;
-  transition: background 0.15s ease;
+  transition: background 0.15s ease, transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
   background: transparent;
   border: none;
   width: 100%;
@@ -232,6 +271,11 @@ body {
 
 .cc-bottom-link:hover {
   background: var(--cc-highlight);
+}
+
+.cc-bottom-link:active {
+  background: var(--cc-highlight-active);
+  transform: scale(0.98);
 }
 
 /* Quick Tool tags */
@@ -402,7 +446,7 @@ body {
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  animation: modalPopIn 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: modalPopIn 0.28s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
 }
 
 .modal-title {
@@ -437,14 +481,18 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
   flex-shrink: 0;
 }
 
 .modal-close-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   color: #ffffff;
-  transform: scale(1.08);
+  transform: scale(1.12);
+}
+
+.modal-close-btn:active {
+  transform: scale(0.9);
 }
 
 .form-group {
@@ -491,12 +539,16 @@ body {
   font-weight: 500;
   color: var(--cc-text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .footer-btn:hover {
   background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
+}
+
+.footer-btn:active {
+  transform: scale(0.96);
 }
 
 .btn-primary {
@@ -511,11 +563,16 @@ body {
   display: flex;
   align-items: center;
   gap: 5px;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.15s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
+  opacity: 0.92;
+  box-shadow: 0 4px 14px rgba(168, 85, 247, 0.35);
+}
+
+.btn-primary:active {
+  transform: scale(0.96);
 }
 
 .color-picker-row {
@@ -531,7 +588,11 @@ body {
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s cubic-bezier(0.34, 1.4, 0.64, 1), border-color 0.15s ease;
+}
+
+.color-swatch:active {
+  transform: scale(0.9);
 }
 
 .color-swatch.selected {
@@ -550,11 +611,11 @@ body {
 }
 
 @keyframes modalPopIn {
-  from {
+  0% {
     opacity: 0;
-    transform: scale(0.92) translateY(10px);
+    transform: scale(0.88) translateY(14px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
