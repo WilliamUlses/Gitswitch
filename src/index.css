@@ -256,3 +256,114 @@ body {
   margin-top: 4px;
   word-break: break-all;
 }
+
+/* Apple Subview Navigation (Control Center Sub-panels) */
+.cc-subview {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 12px;
+  animation: slideIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cc-nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0 8px 0;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.cc-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: transparent;
+  border: none;
+  color: var(--cc-purple);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: opacity 0.15s;
+}
+
+.cc-back-btn:hover {
+  opacity: 0.8;
+  background: var(--cc-highlight);
+}
+
+.cc-nav-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--cc-text-primary);
+}
+
+/* Apple Grouped Card (like iOS / macOS System Settings) */
+.apple-group-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.apple-field-row {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  gap: 3px;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.06);
+}
+
+.apple-field-row:last-child {
+  border-bottom: none;
+}
+
+.apple-field-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--cc-text-muted);
+}
+
+.apple-field-input {
+  background: transparent;
+  border: none;
+  color: var(--cc-text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+}
+
+.apple-field-input::placeholder {
+  color: rgba(255, 255, 255, 0.25);
+}
+
+.apple-btn-primary {
+  background: var(--cc-purple);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: opacity 0.15s;
+  width: 100%;
+}
+
+.apple-btn-primary:hover {
+  opacity: 0.9;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
