@@ -1,0 +1,258 @@
+:root {
+  --apple-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', Menlo, Monaco, Consolas, monospace;
+
+  /* macOS Sequoia / Sonoma Control Center Glass */
+  --cc-bg: rgba(30, 30, 34, 0.82);
+  --cc-border: rgba(255, 255, 255, 0.15);
+  --cc-text-primary: #ffffff;
+  --cc-text-secondary: rgba(255, 255, 255, 0.72);
+  --cc-text-muted: rgba(255, 255, 255, 0.45);
+  --cc-highlight: rgba(255, 255, 255, 0.09);
+  --cc-highlight-active: rgba(255, 255, 255, 0.15);
+  
+  --cc-purple: #a855f7;
+  --cc-blue: #007aff;
+  --cc-green: #34c759;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+body {
+  font-family: var(--apple-font);
+  background-color: transparent;
+  color: var(--cc-text-primary);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Control Center Container matching Apple Wi-Fi widget */
+.control-center-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  background: var(--cc-bg);
+  backdrop-filter: blur(48px) saturate(210%);
+  -webkit-backdrop-filter: blur(48px) saturate(210%);
+  border: 0.5px solid var(--cc-border);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), inset 0 0 1px 1px rgba(255, 255, 255, 0.1);
+  padding: 12px 14px;
+  overflow-y: auto;
+  gap: 2px;
+}
+
+/* Header Row with Toggle Switch */
+.cc-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 2px 8px 2px;
+}
+
+.cc-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--cc-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Native Apple Pill Toggle Switch */
+.apple-switch {
+  width: 40px;
+  height: 24px;
+  background: rgba(120, 120, 128, 0.32);
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.apple-switch.active {
+  background: var(--cc-purple);
+}
+
+.apple-switch-thumb {
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.28);
+}
+
+.apple-switch.active .apple-switch-thumb {
+  transform: translateX(16px);
+}
+
+/* Section Header (like 'Partage de connexion', 'Réseaux connus') */
+.cc-section-header {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cc-text-muted);
+  padding: 8px 4px 4px 4px;
+  letter-spacing: -0.01em;
+}
+
+/* Item Row */
+.cc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  border-radius: 9px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  min-height: 38px;
+}
+
+.cc-row:hover {
+  background: var(--cc-highlight);
+}
+
+.cc-row:active {
+  background: var(--cc-highlight-active);
+}
+
+.cc-row-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Circular Icon (like Wi-Fi / Hotspot icons in screenshot) */
+.cc-icon-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cc-icon-circle.active-purple {
+  background: var(--cc-purple);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+}
+
+.cc-icon-circle.active-blue {
+  background: var(--cc-blue);
+  box-shadow: 0 0 12px rgba(0, 122, 255, 0.4);
+}
+
+.cc-row-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 1px;
+}
+
+.cc-row-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cc-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-row-subtitle {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: var(--cc-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cc-row-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  color: var(--cc-text-muted);
+}
+
+/* Subtle Divider */
+.cc-divider {
+  height: 0.5px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 6px 2px;
+}
+
+/* Bottom Links (like 'Réglages Wi-Fi...' in screenshot) */
+.cc-bottom-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--cc-text-primary);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+}
+
+.cc-bottom-link:hover {
+  background: var(--cc-highlight);
+}
+
+/* Quick Tool tags */
+.cc-badge {
+  font-size: 9.5px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cc-text-secondary);
+}
+
+/* Terminal Drawer */
+.ssh-test-box {
+  background: rgba(0, 0, 0, 0.35);
+  border: 0.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #38bdf8;
+  margin-top: 4px;
+  word-break: break-all;
+}
