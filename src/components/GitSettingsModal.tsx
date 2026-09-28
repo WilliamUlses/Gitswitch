@@ -53,15 +53,15 @@ export const GitSettingsModal: React.FC<GitSettingsModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h3 style={{ fontSize: "14px", fontWeight: 700, color: "var(--cc-text-primary)" }}>
+          <h3 className="modal-title">
             Réglages Git Globaux
           </h3>
-          <button className="cc-bottom-link" style={{ width: "auto", padding: "4px" }} onClick={onClose}>
-            <X size={15} />
+          <button className="modal-close-btn" onClick={onClose} title="Fermer">
+            <X size={14} />
           </button>
         </div>
 
-        <div style={{ fontSize: "11px", color: "var(--cc-text-muted)", lineHeight: 1.4 }}>
+        <div className="modal-subtitle">
           Ces valeurs sont appliquées directement dans votre fichier <code>~/.gitconfig</code>.
         </div>
 
@@ -112,18 +112,10 @@ export const GitSettingsModal: React.FC<GitSettingsModalProps> = ({
 
             <button
               type="submit"
-              className="cc-badge"
-              style={{
-                cursor: "pointer",
-                padding: "6px 14px",
-                background: "var(--cc-purple)",
-                color: "white",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-              }}
+              className="apple-btn-primary"
+              style={{ width: "auto", padding: "6px 14px" }}
             >
-              {savedMsg ? <Check size={12} strokeWidth={3} /> : null}
+              {savedMsg ? <Check size={13} strokeWidth={2.5} /> : null}
               {savedMsg ? "Enregistré !" : "Enregistrer"}
             </button>
           </div>

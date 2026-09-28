@@ -88,11 +88,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h3 style={{ fontSize: "14px", fontWeight: 700 }}>
+          <h3 className="modal-title">
             {profile ? "Modifier le Profil" : "Nouveau Profil Git"}
           </h3>
-          <button className="icon-btn" onClick={onClose}>
-            <X size={15} />
+          <button className="modal-close-btn" onClick={onClose} title="Fermer">
+            <X size={14} />
           </button>
         </div>
 

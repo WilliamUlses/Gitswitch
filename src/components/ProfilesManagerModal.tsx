@@ -34,11 +34,11 @@ export const ProfilesManagerModal: React.FC<ProfilesManagerModalProps> = ({
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h3 style={{ fontSize: "14px", fontWeight: 700, color: "var(--cc-text-primary)" }}>
+          <h3 className="modal-title">
             Gestion des Profils
           </h3>
-          <button className="cc-bottom-link" style={{ width: "auto", padding: "4px" }} onClick={onClose}>
-            <X size={15} />
+          <button className="modal-close-btn" onClick={onClose} title="Fermer">
+            <X size={14} />
           </button>
         </div>
 
@@ -108,19 +108,14 @@ export const ProfilesManagerModal: React.FC<ProfilesManagerModalProps> = ({
         </div>
 
         <button
-          className="cc-row"
+          className="apple-btn-primary"
           style={{
-            justifyContent: "center",
-            gap: "6px",
-            background: "rgba(168, 85, 247, 0.15)",
-            border: "0.5px solid rgba(168, 85, 247, 0.3)",
-            color: "white",
             marginTop: "6px",
           }}
           onClick={onAddNew}
         >
           <Plus size={14} />
-          <span style={{ fontSize: "12px", fontWeight: 600 }}>Ajouter un profil</span>
+          <span>Ajouter un profil</span>
         </button>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "8px" }}>
